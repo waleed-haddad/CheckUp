@@ -70,7 +70,7 @@ export default function App() {
             <Ellipse cx={width/2} rx={height} ry={height + 35}/>
           </ClipPath>
           <Image 
-            href={require('./assets/login-background-4.jpg')} 
+            href={require('./assets/login-background-5.jpg')} 
             width={width} 
             height={height + 35}
             preserveAspectRatio='xMidYMid slice'
