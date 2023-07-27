@@ -5,12 +5,44 @@ import Svg, { Image, Ellipse, ClipPath } from 'react-native-svg';
 import Animated, { useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay, withSequence, withSpring } from 'react-native-reanimated';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { FIREBASE_APP, FIREBASE_AUTH } from '../FirebaseConfig';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+
+//To-DO: firebase stuff does not work, follow newer video to see if syntax is the issue
 
 const LoginScreen = () => {
+    // Login Info constants
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const auth = FIREBASE_AUTH;
+    
+    const signIn = async () => {
+        try {
+            const response = await signInWithEmailAndPassword(auth, email, password);
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+            alert('Sign In failed: ' + error.messsage)
+        }
+    }
 
+    const signUp = async () => {
+        try {
+            const response = await createUserWithEmailAndPassword(auth, email, password);
+            console.log(response);
+            alert('Check your emails!')
+        } catch (error) {
+            console.log(error);
+            alert('Sign Up failed: ' + error.messsage)
+        }
+    }
+
+    // Animation constants
     const { height, width } = useWindowDimensions();
     const imagePosition = useSharedValue(1);
-    const fomrBUttonScale = useSharedValue(1);
+    const formButtonScale = useSharedValue(1);
+    //Registration constants
     const [isRegistering, setIsRegistering] = useState(false);
 
 
@@ -45,9 +77,13 @@ const LoginScreen = () => {
 
     const formButtonAnimatedStyle = useAnimatedStyle(() => {
         return {
-            transform: [{ scale: fomrBUttonScale.value }]
+            transform: [{ scale: formButtonScale.value }]
         }
     })
+
+    const formButtonAnimation = () => {
+        formButtonScale.value = withSequence(withSpring(1.5), withSpring(1));
+    }
 
     const loginHandler = () => {
         imagePosition.value = 0;
@@ -98,8 +134,8 @@ const LoginScreen = () => {
                 <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
                     <TextInput 
                         placeholder="Email"
-                        // value={ }
-                        // onChangeText={text => } 
+                        value={email}
+                        onChangeText={text => setEmail(text)} 
                         placeholderTextColor="black" 
                         style={styles.textInput} 
                     />
@@ -107,21 +143,24 @@ const LoginScreen = () => {
                         <TextInput 
                             placeholder="Full Name" 
                             placeholderTextColor="black"
-                            // value={ }
-                            // onChangeText={text => } 
+                            value={name}
+                            onChangeText={text => setName(text)} 
                             style={styles.textInput} 
                         />
                     )}
                     <TextInput 
                         placeholder="Password" 
                         placeholderTextColor="black" 
-                        // value={ }
-                        // onChangeText={text => }
+                        value={password}
+                        onChangeText={text => setPassword(text)}
                         style={styles.textInput} 
                         secureTextEntry
                     />
                     <Animated.View style={[styles.formButton, formButtonAnimatedStyle]}>
-                        <Pressable onPress={() => fomrBUttonScale.value = withSequence(withSpring(1.5), withSpring(1))}>
+                        <Pressable onPress={() => {
+                            formButtonAnimation();
+                            {isRegistering ? signUp() : signIn()}
+                        }}>
                             <Text style={styles.buttonText}>
                                 {isRegistering ? 'Register' : 'Login'}
                             </Text>
