@@ -79,6 +79,10 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       borderRadius: 20,
       top: -20,
+    },
+    homescreencontainer: {
+      justifyContent: 'center',
+      flex: 1,
     }
   });
 
