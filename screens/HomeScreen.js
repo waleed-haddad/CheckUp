@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions, TextInput, Pressable, Button, SafeAreaView } from 'react-native';
 import styles from '../styles';
-import Svg, { Image, Ellipse, ClipPath } from 'react-native-svg';
-import Animated, { useSharedValue, useAnimatedStyle, interpolate, withTiming, withDelay, withSequence, withSpring } from 'react-native-reanimated';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FIREBASE_AUTH } from '../FirebaseConfig';
@@ -50,7 +48,9 @@ const HomeScreen = ({ navigation }) => {
       <Text>HomeScreen</Text>
       <Button onPress={() => FIREBASE_AUTH.signOut()} title="Logout"/>
       <Button onPress={async () => {
+          //oldDate used to account for time shift
           const oldDate = new Date();
+          //Check whether the date conversion is as expected
           console.log(oldDate.getTime()/1000);
           console.log(date.getTime()/1000);
           await schedulePushNotification(date.getTime()/1000, oldDate.getTime()/1000);
@@ -78,7 +78,7 @@ const HomeScreen = ({ navigation }) => {
   )
 }
 
-// Second, call the method
+// The notification is scheduled based on user's selected date and time
 async function schedulePushNotification(date, oldDate) {
   Notifications.scheduleNotificationAsync({
     content: {
