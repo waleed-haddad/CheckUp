@@ -1,21 +1,20 @@
 import React from "react";
-import { Touchable, TouchableOpacity } from "react-native";
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
 
 const Friend = (props) => {
 
     return (
-        <View style={styles.item}>
-            <View style={styles.itemLeft}>
-                <View style={styles.square}></View>
-                <Text style={styles.itemText}>{props.Text}</Text>
+        <View style={homescreen_styles.item}>
+            <View style={homescreen_styles.itemLeft}>
+                <View style={homescreen_styles.square}></View>
+                <Text style={homescreen_styles.itemText}>{props.Text}</Text>
             </View>
-            <View style={styles.circular}></View>
+            <View style={homescreen_styles.circular}></View>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
+const homescreen_styles = StyleSheet.create({
     item: {
         backgroundColor: '#fff',
         padding: 15,
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
     square: {
         width: 24,
         height: 24,
-        backgroundColor: '##F6793F',
+        backgroundColor: '#F6793F',
         opacity: 0.4,
         borderRadius: 5,
         marginRight: 15,
