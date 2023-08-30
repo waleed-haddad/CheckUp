@@ -43,6 +43,18 @@ const HomeScreen = ({ navigation }) => {
     showMode('time');
   };
 
+  //listens to incoming notification, different actions for one-time and recurring notifications
+  React.useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(notification => {
+      if (notification.request.trigger.repeats) {
+        console.log("recurring noti")
+      } else {
+        scheduleIntervalNotification(1);
+      }
+    });
+    return () => subscription.remove();
+  }, []);
+
   return (
     <View style={styles.homescreencontainer}>
       <Text>HomeScreen</Text>
@@ -53,7 +65,7 @@ const HomeScreen = ({ navigation }) => {
           //Check whether the date conversion is as expected
           console.log(oldDate.getTime()/1000);
           console.log(date.getTime()/1000);
-          await schedulePushNotification(date.getTime()/1000, oldDate.getTime()/1000);
+          await scheduleOneTimeNotification(date.getTime()/1000, oldDate.getTime()/1000);
         }} title="notification"
       /> 
       <Button onPress={async () => {
@@ -78,15 +90,28 @@ const HomeScreen = ({ navigation }) => {
   )
 }
 
-// The notification is scheduled based on user's selected date and time
-async function schedulePushNotification(date, oldDate) {
-  Notifications.scheduleNotificationAsync({
+// One-time notification, scheduled based on user's selected date and time
+async function scheduleOneTimeNotification(date, oldDate) {
+  const initalNotification = await Notifications.scheduleNotificationAsync({
     content: {
-      title: 'Look at that notification',
+      title: 'This is a one-time notification',
       body: "I'm so proud of myself!",
     },
     trigger: { 
       seconds: date - oldDate, repeats: false
+    },
+  });
+}
+
+// Repeating notification, scheduled based on user's selected interval range (in weeks)
+async function scheduleIntervalNotification(weeks) {
+  const initalNotification = await Notifications.scheduleNotificationAsync({
+    content: {
+      title: 'This is a repeating notification',
+      body: "I'm so proud of myself!",
+    },
+    trigger: { 
+      seconds: 60, repeats: true
     },
   });
 }
@@ -96,4 +121,4 @@ async function cancelPushNotification() {
 }
 
 
-export default HomeScreen
+export default HomeScreen;

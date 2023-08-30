@@ -6,6 +6,7 @@ import Animated, { useSharedValue, useAnimatedStyle, interpolate, withTiming, wi
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
+import HomeScreen2 from './screens/HomeScreen - Logic Code';
 import HomeScreen from './screens/HomeScreen';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './FirebaseConfig';
