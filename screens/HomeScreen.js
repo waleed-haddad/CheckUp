@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FIREBASE_AUTH } from '../FirebaseConfig';
 import * as Notifications from 'expo-notifications';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Modal from "react-native-modal";
 
 const HomeScreen = ({ navigation }) => {
   // These states handle individual and lists of friends
@@ -15,6 +16,7 @@ const HomeScreen = ({ navigation }) => {
   //These functions handle friend addition and completion
   const handleAddFriend = () => {
     Keyboard.dismiss()
+    setmodalVisible(!modalVisible);
     setFriendItems([...friendItems, friend])
     setFriend(null);
   }
@@ -24,10 +26,23 @@ const HomeScreen = ({ navigation }) => {
     setFriendItems(itemsCopy);
   }
 
+  //Handle modal pop-up and functionality
+  const [modalVisible, setmodalVisible] = useState(false);
+  const toggleModal = () => {
+    setmodalVisible(!modalVisible);
+  };
+
   return (
     <View style={homescreen_styles.container}>
       {/* Friends List */}
       <View style={homescreen_styles.friendsWrapper}>
+      <Modal isVisible={modalVisible}>
+        <View style={homescreen_styles.modalContainer}>
+          <Text>Hello!</Text>
+
+          <Button title="Hide modal" onPress={toggleModal} />
+        </View>
+      </Modal>
       {/* <Button onPress={() => FIREBASE_AUTH.signOut()} title="Logout"/> */}
         <Text style={homescreen_styles.sectionTitle}>Friends List</Text>
         <View style={homescreen_styles.items}>
@@ -51,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
         style={homescreen_styles.writeFriendWrapper}
       >
         <TextInput style={homescreen_styles.input} placeholder={'Your friend\'s name'} value={friend} onChangeText={text => setFriend(text)} />
-        <TouchableOpacity onPress={() => handleAddFriend()}>
+        <TouchableOpacity onPress={() => [toggleModal(), handleAddFriend()]}>
           <View style={homescreen_styles.addWrapper}>
             <Text style={homescreen_styles.addText}>+</Text>
           </View>
@@ -111,7 +126,21 @@ const homescreen_styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 30,
     justifyContent: 'space-between', 
-  }
+  },
+  modalContainer: {
+    backgroundColor: "#FEF7E5",
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "#000",
+    borderStyle: "solid",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 10,
+    textAlign: "center",
+    fontSize: 24,
+    paddingHorizontal: 15,
+    minHeight: 100,
+  },
 });
 
 export default HomeScreen;
