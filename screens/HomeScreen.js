@@ -32,6 +32,15 @@ const HomeScreen = ({ navigation }) => {
     setmodalVisible(!modalVisible);
   };
 
+  //Handle datetimepicker values and functionality
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('datetime');
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setDate(currentDate);
+  };
+
   return (
     <View style={homescreen_styles.container}>
       {/* Friends List */}
@@ -39,7 +48,15 @@ const HomeScreen = ({ navigation }) => {
       <Modal isVisible={modalVisible}>
         <View style={homescreen_styles.modalContainer}>
           <Text>Hello!</Text>
-
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={false}
+            onChange={onChange}
+            display='inline'
+            themeVariant="light"
+          />
           <Button title="Hide modal" onPress={toggleModal} />
         </View>
       </Modal>
