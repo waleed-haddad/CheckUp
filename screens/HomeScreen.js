@@ -7,6 +7,7 @@ import { FIREBASE_AUTH } from '../FirebaseConfig';
 import * as Notifications from 'expo-notifications';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from "react-native-modal";
+import {Picker} from '@react-native-picker/picker';
 
 const HomeScreen = ({ navigation }) => {
   // These states handle individual and lists of friends
@@ -41,13 +42,16 @@ const HomeScreen = ({ navigation }) => {
     setDate(currentDate);
   };
 
+  //Handle interval picking
+  const [selectedLanguage, setSelectedLanguage] = useState();
+
   return (
     <View style={homescreen_styles.container}>
       {/* Friends List */}
       <View style={homescreen_styles.friendsWrapper}>
       <Modal isVisible={modalVisible}>
         <View style={homescreen_styles.modalContainer}>
-          <Text>Hello!</Text>
+          <Text style={homescreen_styles.modalTitle}>Pick your start date and notification time!</Text>
           <DateTimePicker
             testID="dateTimePicker"
             value={date}
@@ -57,7 +61,9 @@ const HomeScreen = ({ navigation }) => {
             display='inline'
             themeVariant="light"
           />
-          <Button title="Hide modal" onPress={toggleModal} />
+          <Pressable style={homescreen_styles.addFriendContainer} onPress={toggleModal}>
+            <Text style={homescreen_styles.modalTitle}>Add Friend</Text>
+          </Pressable>
         </View>
       </Modal>
       {/* <Button onPress={() => FIREBASE_AUTH.signOut()} title="Logout"/> */}
@@ -68,7 +74,7 @@ const HomeScreen = ({ navigation }) => {
             friendItems.map((item, index) => {
               return (
                 <TouchableOpacity key={index} onPress={() => completeFriend(index)}>
-                  <Friend Text={item} />
+                  <Friend Text={item} Day={date.getDay()} Time={date.toLocaleTimeString()}/>
                 </TouchableOpacity>
               )
             })
@@ -157,6 +163,16 @@ const homescreen_styles = StyleSheet.create({
     fontSize: 24,
     paddingHorizontal: 15,
     minHeight: 100,
+  },
+  modalTitle: {
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#3D519A',
+    marginTop: 5,
+  },
+  addFriendContainer: {
+    margin: 10,
   },
 });
 
