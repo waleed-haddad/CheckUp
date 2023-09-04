@@ -17,14 +17,16 @@ const HomeScreen = ({ navigation }) => {
   //These functions handle friend addition and completion
   const handleAddFriend = () => {
     Keyboard.dismiss()
-    setmodalVisible(!modalVisible);
     setFriendItems([...friendItems, friend])
     setFriend(null);
   }
   const completeFriend = (index) => {
     let itemsCopy = [...friendItems];
+    let itemsCopy2 = [...friendDate];
     itemsCopy.splice(index, 1);
+    itemsCopy2.splice(index, 1);
     setFriendItems(itemsCopy);
+    setFriendDate(itemsCopy2);
   }
 
   //Handle modal pop-up and functionality
@@ -36,11 +38,16 @@ const HomeScreen = ({ navigation }) => {
   //Handle datetimepicker values and functionality
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('datetime');
+  const [friendDate, setFriendDate] = useState([]);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
   };
+
+  const handleAddDate = () => {
+    setFriendDate([...friendDate, date])
+  }
 
   //Handle interval picking
   const [selectedLanguage, setSelectedLanguage] = useState();
@@ -61,7 +68,12 @@ const HomeScreen = ({ navigation }) => {
             display='inline'
             themeVariant="light"
           />
-          <Pressable style={homescreen_styles.addFriendContainer} onPress={toggleModal}>
+          <Pressable style={homescreen_styles.addFriendContainer} onPress={() => {
+            handleAddFriend();
+            handleAddDate();
+            toggleModal();
+          }
+                                                                                }>
             <Text style={homescreen_styles.modalTitle}>Add Friend</Text>
           </Pressable>
         </View>
@@ -74,7 +86,7 @@ const HomeScreen = ({ navigation }) => {
             friendItems.map((item, index) => {
               return (
                 <TouchableOpacity key={index} onPress={() => completeFriend(index)}>
-                  <Friend Text={item} Day={date.getDay()} Time={date.toLocaleTimeString()}/>
+                  <Friend Text={item} Day={friendDate[index].getDay()} Time={friendDate[index].toLocaleTimeString()}/>
                 </TouchableOpacity>
               )
             })
@@ -89,7 +101,7 @@ const HomeScreen = ({ navigation }) => {
         style={homescreen_styles.writeFriendWrapper}
       >
         <TextInput style={homescreen_styles.input} placeholder={'Your friend\'s name'} value={friend} onChangeText={text => setFriend(text)} />
-        <TouchableOpacity onPress={() => [toggleModal(), handleAddFriend()]}>
+        <TouchableOpacity onPress={() => toggleModal()}>
           <View style={homescreen_styles.addWrapper}>
             <Text style={homescreen_styles.addText}>+</Text>
           </View>
