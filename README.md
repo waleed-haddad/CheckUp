@@ -67,7 +67,11 @@
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
-      <a href="#Demo">Demo</a>
+    </li>
+    <li>
+       <a href="#Demo">Demo</a>
+    </li>
+    <li>
       <a href="#Contact">Contact</a>
     </li>
   </ol>
