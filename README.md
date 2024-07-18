@@ -128,7 +128,7 @@ Will be added soon!
 <!-- CONTACT -->
 ## Contact
 
-Your Name - waleed.haddad@mail.utoronto.ca@waleed.haddad@mail.utoronto.ca_client.com
+Waleed Haddad - waleed.haddad@mail.utoronto.ca
 
 Project Link: [https://github.com/waleed-haddad/CheckUp](https://github.com/waleed-haddad/CheckUp)
 
